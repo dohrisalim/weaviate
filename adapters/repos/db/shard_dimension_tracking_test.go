@@ -654,7 +654,7 @@ func TestDimensionTrackingWithGrouping(t *testing.T) {
 			// Create test class and database
 			class := &models.Class{
 				Class:               tc.name,
-				VectorIndexConfig:   enthnsw.NewDefaultUserConfig(),
+				VectorIndexConfig:   enthnsw.NewDefaultUserConfig(nil),
 				InvertedIndexConfig: invertedConfig(),
 			}
 			db := createTestDatabaseWithClass(t, class)
