@@ -795,7 +795,6 @@ func (m *Migrator) UpdateReplicationConfig(ctx context.Context, className string
 }
 
 func (m *Migrator) RecalculateVectorDimensions(ctx context.Context) error {
-	completion := &sync.WaitGroup{}
 	m.logger.
 		WithField("action", "reindex").
 		Info("Reindexing dimensions, this may take a while")
@@ -831,9 +830,8 @@ func (m *Migrator) RecalculateVectorDimensions(ctx context.Context) error {
 
 			resetTime := rtime.UnixNano() / int64(time.Millisecond) //
 
-			completion.Add(1)
-			enterrors.GoWrapper(func() {
-				defer completion.Done()
+
+
 				func() error {
 					m.logger.WithField("action", "reindex").Infof("reindexing objects for shard %q", name)
 					return shard.IterateObjects(ctx, func(index *Index, shard ShardLike, object *storobj.Object) error {
@@ -879,7 +877,7 @@ func (m *Migrator) RecalculateVectorDimensions(ctx context.Context) error {
 						})
 					})
 				}()
-			}, m.logger)
+
 			return nil
 		})
 		if err != nil {
@@ -888,7 +886,6 @@ func (m *Migrator) RecalculateVectorDimensions(ctx context.Context) error {
 		}
 	}
 	f := func() {
-		completion.Wait()
 		for {
 			m.logger.
 				WithField("action", "reindex").
