@@ -805,7 +805,6 @@ func (m *Migrator) RecalculateVectorDimensions(ctx context.Context) error {
 		indices = m.db.indices
 	}()
 
-
 	m.logger.WithField("action", "reindex").Infof("Found %v indexes to reindex", len(indices))
 
 	var classes []*models.Class
