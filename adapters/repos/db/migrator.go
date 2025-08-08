@@ -884,8 +884,6 @@ func (m *Migrator) RecalculateVectorDimensions(ctx context.Context, reindexVecto
 						})
 					})
 				}()
-			} else {
-				m.logger.WithField("action", "reindex").Infof("skipping shard %q, dimensions bucket already exists", name)
 			}
 
 			return nil
